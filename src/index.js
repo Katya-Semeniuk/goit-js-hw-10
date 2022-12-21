@@ -24,8 +24,9 @@ function onSearchInput(e) {
 };
 
 
-function render (countries) {
-    
+function render(countries) {
+    console.log(countries.length)
+
     if (countries.length >= 10) {
         console.log("INSIDE FIRST IF");
         Notify.info('Too many matches found. Please enter a more specific name');
@@ -53,17 +54,16 @@ function cleanCountryInfo() {
 
 
 // ---- create card for one country
-function createCountryCard() {
+function createCountryCard(countries) {
     const markupCountryCard = countries
-            .map(({ name, capital, population, flags, language }) =>
-                `<div class="country">
-                <h1>Country ${name.official} </h1>
-                <p>Capital ${capital} </p>
-                <p>Population ${population} </p>
-                <>
+            .map(({ name, capital, population, flags, languages }) =>
+                `<div class="container-country">
+                <h1 class="title"> ${name.official} </h1>
                 <img class="img-flag" src="${flags.svg}" 
             alt="Flag of ${name.official}" />
-            <p> languages${language} </p>
+                <p><span class="subtitle">Capital: </span>${capital} </p>
+                <p><span class="subtitle">Population:</span> ${population} </p>
+            <p><span class="subtitle">Languages: </span>${Object.values(languages)} </p>
                 </div>`)
             .join('');
     refs.countryInfo.insertAdjacentHTML('beforeend', markupCountryCard)
@@ -75,8 +75,8 @@ function createCountryCard() {
 function createCountriesList() {
     const markupCountriesList = countries
             .map(({ name, flags }) =>
-                `<li class="country">
-            <img class="img-flag" src="${flags.svg}" 
+                `<li class="countries">
+            <img class="img-flags" src="${flags.svg}" 
              alt="Flag of ${name.official}" />
                   <h1 class ="countries-name">${name.official}</h1>
                   </li>`)

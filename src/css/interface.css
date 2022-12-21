@@ -12,7 +12,7 @@ li {
 .country-list {
   padding-left: 10px;
 }
-.country {
+.countries {
   display: flex;
   align-items: center;
   margin-bottom: 3px;
@@ -21,4 +21,17 @@ li {
 #search-box:hover {
   cursor: auto;
   border: 1px solid rgb(156, 182, 239);
+}
+
+/* markupCountryCard */
+.title {
+  font-size: 22;
+}
+.img-flag {
+  width: 40px;
+  height: 40px;
+}
+.subtitle {
+  font-size: 18;
+  font-weight: bold;
 }
