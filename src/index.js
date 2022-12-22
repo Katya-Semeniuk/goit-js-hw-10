@@ -18,36 +18,47 @@ function onSearchInput(e) {
     API.fetchCountries(inputValue)
         .then(render)
         .catch(error => {
-            Notify.failure('Oops, there is no country with that name')
+        console.log('catch')
+                Notify.failure('Oops, there is no country with that name')
+                return;
+            
+            
         })
         .finally();
+    if (!inputValue) {
+        cleanCountryList();
+        cleanCountryInfo();
+        return;
+    }
 };
 
 
 function render(countries) {
-    console.log(countries.length)
-
-    if (countries.length >= 10) {
-        console.log("INSIDE FIRST IF");
-        Notify.info('Too many matches found. Please enter a more specific name');
-        
-} else 
-        if (countries.length >= 2 && countries.length < 10) {
-          createCountriesList(countries);
+    if (countries.length > 10) {
+        Notify.info('Too many matches found. Please enter a more specific name')
+        return;
+    }
+        if (countries.length >= 2 && countries.length <= 10) {
             cleanCountryList();
+              cleanCountryInfo();
+          createCountriesList(countries);
+           
         }
-        else {
-            console.log("INSIDE THIRD IF");
+        if (countries.length === 1){
+            cleanCountryInfo();
+            cleanCountryList();
             createCountryCard(countries);
-        cleanCountryInfo();
+        
         }
-};
+}; 
 
 function cleanCountryList() {
+     console.log('inside cleanCountryList')
     refs.countryList.innerHTML = '';
 };
 
 function cleanCountryInfo() {
+    console.log('INSIDE leanCountryInfo')
     refs.countryInfo.innerHTML = '';
 };
 
@@ -65,14 +76,15 @@ function createCountryCard(countries) {
                 <p><span class="subtitle">Population:</span> ${population} </p>
             <p><span class="subtitle">Languages: </span>${Object.values(languages)} </p>
                 </div>`)
-            .join('');
+        .join('');
+    console.log(markupCountryCard)
     refs.countryInfo.insertAdjacentHTML('beforeend', markupCountryCard)
 };
 
 
 
 //---- create Countries`s List
-function createCountriesList() {
+function createCountriesList(countries) {
     const markupCountriesList = countries
             .map(({ name, flags }) =>
                 `<li class="countries">
@@ -81,6 +93,5 @@ function createCountriesList() {
                   <h1 class ="countries-name">${name.official}</h1>
                   </li>`)
             .join('');
-        console.log(markupCountriesList);
     refs.countryList.insertAdjacentHTML('beforeend', markupCountriesList);
 };
