@@ -3,10 +3,10 @@ import './css/interface.css';
 import debounce from 'lodash.debounce';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
-import API from './fetchCountries';
+import getCountriesInfo from './fetchCountries';
 import getRefs from './get-refs'
 
-const DEBOUNCE_DELAY = 2000;
+const DEBOUNCE_DELAY = 500;
 const refs = getRefs();
 
 
@@ -15,7 +15,12 @@ refs.searchInput.addEventListener('input', debounce(onSearchInput, DEBOUNCE_DELA
 function onSearchInput(e) {
 
     const inputValue = e.target.value.trim();
-    API.fetchCountries(inputValue)
+    if (!inputValue) {
+        cleanCountryList();
+        cleanCountryInfo();
+        return;
+    }
+    getCountriesInfo.fetchCountries(inputValue)
         .then(render)
         .catch(error => {
         console.log('catch')
@@ -23,13 +28,7 @@ function onSearchInput(e) {
                 return;
             
             
-        })
-        .finally();
-    if (!inputValue) {
-        cleanCountryList();
-        cleanCountryInfo();
-        return;
-    }
+        });
 };
 
 
